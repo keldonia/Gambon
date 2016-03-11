@@ -23,6 +23,7 @@ class Route
     routes = @pattern
     route_data = routes.match("#{req.path}")
     route_params = Hash.new
+
     route_data.names.each do |name|
       route_params[name] = route_data[name.to_sym]
     end
@@ -58,8 +59,22 @@ class Router
   end
 
   def run(req, res)
-    if self.match(req)
+    matched_route = self.match(req)
+    params = req.params
+
+    if matched_route && matched_route.http_method == :get
       self.match(req).run(req, res)
+    elsif matched_route && matched_route.http_method != :get
+
+      token_from_cookie = req.cookies.find do |cookie|
+        cookie.name = '_authenticity_token_rails_lite_app'
+      end
+
+      if token_from_cookie && params[:form_token] == JSON.parse(token_from_cookie.value)['authenticity_token']
+        matched_route.run(req,res)
+      else
+        raise "No Authenticity Token"
+      end
     else
       res.status = 404
     end

@@ -4,6 +4,7 @@ require 'active_support/inflector'
 require 'erb'
 require_relative './session'
 require_relative './route_helpers'
+require_relative './authenticity_token'
 
 class ControllerBase
   include RouteHelpers
@@ -55,6 +56,14 @@ class ControllerBase
 
     self.send(name)
     render(name.to_s) unless already_built_response?
+  end
+
+  def protect_from_forgery
+    @authenticity = AuthenticityToken.new(res)
+  end
+
+  def form_authenticity_token
+    @authenticity ? @authenticity.token : nil
   end
 
 end

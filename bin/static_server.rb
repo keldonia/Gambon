@@ -1,6 +1,6 @@
 require 'rack'
 require_relative '../lib/router'
-require_relative '../lib/show_exceptions'
+require_relative '../lib/static'
 
 app = Proc.new do |env|
   req = Rack::Request.new(env)
@@ -10,7 +10,7 @@ app = Proc.new do |env|
 end
 
 app = Rack::Builder.new do
-  use ShowExceptions
+  use Static
   run app
 end.to_app
 

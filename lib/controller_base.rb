@@ -7,7 +7,7 @@ require_relative './route_helpers'
 
 class ControllerBase
   include RouteHelpers
-  
+
   attr_reader :req, :res, :params
 
   def initialize(req, res, hash={})
@@ -56,4 +56,5 @@ class ControllerBase
     self.send(name)
     render(name.to_s) unless already_built_response?
   end
+
 end

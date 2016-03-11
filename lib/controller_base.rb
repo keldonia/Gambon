@@ -3,8 +3,11 @@ require 'active_support/core_ext'
 require 'active_support/inflector'
 require 'erb'
 require_relative './session'
+require_relative './route_helpers'
 
 class ControllerBase
+  include RouteHelpers
+  
   attr_reader :req, :res, :params
 
   def initialize(req, res, hash={})

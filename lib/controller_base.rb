@@ -5,6 +5,7 @@ require 'erb'
 require_relative './session'
 require_relative './route_helpers'
 require_relative './authenticity_token'
+require_relative './flash'
 
 class ControllerBase
   include RouteHelpers
@@ -25,6 +26,7 @@ class ControllerBase
     raise "Double Render" if already_built_response?
     @already_built_response = true
     @res.status = 302
+    flash.store_flash(@res)
     @res['Location'] = url
     session.store_session(@res)
   end
@@ -53,7 +55,6 @@ class ControllerBase
   end
 
   def invoke_action(name)
-
     self.send(name)
     render(name.to_s) unless already_built_response?
   end

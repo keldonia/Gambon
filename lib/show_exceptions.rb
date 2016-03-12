@@ -16,7 +16,7 @@ class ShowExceptions
   private
 
   def render_exception(e)
-    dir_path = File.direname(__FILE__)
+    dir_path = File.dirname(__FILE__)
     template_fname = File.join(dir_path, "templates", "rescue.html.erb")
     template = File.read(template_fname)
     body = ERB.new(template).result(binding)
@@ -55,7 +55,7 @@ class ShowExceptions
   end
 
   def format_source(source_lines, source_line_num)
-    start = [0, source_line_num - 3].max
+    start = [0, source_line_num - 5].max
     lines = source_lines[start..(start + 5)]
     Hash[*(start..(lines.count + start).flattened)]
   end

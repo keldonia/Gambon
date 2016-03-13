@@ -1,0 +1,5 @@
+.DS_Store
+.byebug_history
+/.bundle
+/Gemfile.lock
+/tmp/

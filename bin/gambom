@@ -1,3 +1,5 @@
+#!/usr/bin/env ruby
+
 require 'rubygems'
 require 'thor'
 
@@ -8,7 +10,7 @@ class Generate < Thor
     model_name = name.capitalize
 
     File.open("./app/models/#{model_name.downcase}.rb", "w") do |f|
-      f.write("class #{model_name} < SQLObject\n\n")
+      f.write("class #{model_name} < Gambom::SQLObject\n\n")
       f.write("end\n")
       f.write("#{model_name}.finalize!")
     end
@@ -65,7 +67,7 @@ end
 
 class CLI < Thor
   register(Generate, 'generate', 'generate <command>', 'Generates a model or controller')
-  register(Ob, 'db:<command>', "Accesses commands for the database.")
+  register(Db, 'db', 'db:<command>', "Accesses commands for the database.")
 
   desc "g", "alias of generate"
   subcommand 'g', Generate
@@ -76,9 +78,6 @@ class CLI < Thor
     ServerConnection.start
   end
 
-  desc "s", "alias of server"
-  subcommand 's', server
-
   desc 'new', 'creates a new Gambon app'
   def new(name)
     Dir.mkdir "./#{name}"
@@ -86,22 +85,22 @@ class CLI < Thor
     Dir.mkdir "./#{name}/app/models"
     Dir.mkdir "./#{name}/app/controllers"
     File.open("./#{name}/app/controllers/application_controller.rb", "w") do |f|
-      f.write File.read(File.expand_path('../../template/app/controllers/application_controller.rb', __FILE__))
+      f.write File.read(File.expand_path('../../templates/app/controllers/application_controller.rb', __FILE__))
     end
 
     Dir.mkdir "./#{name}/config"
     File.open("./#{name}/config/routes.rb", "w") do |f|
-      f.write File.read(File.expand_path('../../template/config/routes.rb', __FILE__))
+      f.write File.read(File.expand_path('../../templates/config/routes.rb', __FILE__))
     end
 
     Dir.mkdir "./#{name}/db"
     Dir.mkdir "./#{name}/db/migrate"
     File.open("./#{name}/db/seeds.rb", "w") do |f|
-      f.write File.read(File.expand_path('../../template/db/seeds.rb', __FILE__))
+      f.write File.read(File.expand_path('../../templates/db/seeds.rb', __FILE__))
     end
 
     File.open("./#{name}/Gemfile", "w") do |f|
-      f.write File.read(expand_path('../../template/Gemfile', __FILE__))
+      f.write File.read(File.expand_path('../../templates/Gemfile', __FILE__))
     end
   end
 end

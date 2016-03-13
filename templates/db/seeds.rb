@@ -1,6 +1,6 @@
 class Seed
 
-  def.populate
+  def self.populate
     # Example Seeds
 
     # ralph = Butcher.new(fname: "Ralph", lname: "Jones")

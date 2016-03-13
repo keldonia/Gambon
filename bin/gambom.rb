@@ -1,0 +1,109 @@
+require 'rubygems'
+require 'thor'
+
+class Generate < Thor
+  desc "model <name>", "generate a model with the specified name."
+
+  def model(name)
+    model_name = name.capitalize
+
+    File.open("./app/models/#{model_name.downcase}.rb", "w") do |f|
+      f.write("class #{model_name} < SQLObject\n\n")
+      f.write("end\n")
+      f.write("#{model_name}.finalize!")
+    end
+
+    migration("Create #{model_name}")
+    puts "#{model_name} model created"
+  end
+
+  desc "migration <name>", "generates an empty sql file with a filename of the specified <name> appended to a timestamp"
+  def migration(name)
+    timestamp = Time.now.to_s.split(" ").join
+    require 'active_support/inflector'
+    filename = "#{timestamp}__#{name.underscore.downcase}"
+
+    File.open("./db/migrate/#{filename}.sql", "w") do |f|
+      f.write ("CREATE TABLE IF NOT EXISTS #{name} \n")
+      f.write ("\tid SERIAL PRIMARY KEY \n")
+      f.write ("\tname INTEGER NOT NULL")
+      f.write(");")
+    end
+  end
+end
+
+class Db < Thor
+  desc "create", "creates database"
+  def create
+    require_relative '../lib/db_connection'
+    DBConnection.reset
+    puts "Database created!"
+  end
+
+  desc "migrate", "runs pending migration"
+  def migrate
+    require_relative '../lib/db_connection'
+    DBConnection.migrate
+    puts "Database migrated!"
+  end
+
+  desc "seed", "seeds the database"
+  def seed
+    require_relative '../lib/gambon'
+    Seed.populate
+    puts 'db seeded'
+  end
+
+  desc "reset", "resets the database and seeds it"
+  def reset
+    create
+    migrate
+    seed
+    puts "Database reset"
+  end
+end
+
+class CLI < Thor
+  register(Generate, 'generate', 'generate <command>', 'Generates a model or controller')
+  register(Ob, 'db:<command>', "Accesses commands for the database.")
+
+  desc "g", "alias of generate"
+  subcommand 'g', Generate
+
+  desc 'server', 'starts the Gambon server'
+  def server
+    require '../lib/gambon'
+    ServerConnection.start
+  end
+
+  desc "s", "alias of server"
+  subcommand 's', server
+
+  desc 'new', 'creates a new Gambon app'
+  def new(name)
+    Dir.mkdir "./#{name}"
+    Dir.mkdir "./#{name}/app"
+    Dir.mkdir "./#{name}/app/models"
+    Dir.mkdir "./#{name}/app/controllers"
+    File.open("./#{name}/app/controllers/application_controller.rb", "w") do |f|
+      f.write File.read(File.expand_path('../../template/app/controllers/application_controller.rb', __FILE__))
+    end
+
+    Dir.mkdir "./#{name}/config"
+    File.open("./#{name}/config/routes.rb", "w") do |f|
+      f.write File.read(File.expand_path('../../template/config/routes.rb', __FILE__))
+    end
+
+    Dir.mkdir "./#{name}/db"
+    Dir.mkdir "./#{name}/db/migrate"
+    File.open("./#{name}/db/seeds.rb", "w") do |f|
+      f.write File.read(File.expand_path('../../template/db/seeds.rb', __FILE__))
+    end
+
+    File.open("./#{name}/Gemfile", "w") do |f|
+      f.write File.read(expand_path('../../template/Gemfile', __FILE__))
+    end
+  end
+end
+
+CLI.start(ARGV)

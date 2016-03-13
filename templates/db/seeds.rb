@@ -9,8 +9,8 @@ class Seed
     # JJ = Shop.new(name: "J&J Son's Butcher Shop").save
     # B2 = Shop.new(name: "Ralph's", owner_id: ralph.id).save
 
-    # gambon = Ham.new(type: gambon, butcher_id: JJ.id).save
-    # gambon = Ham.new(type: honey-glazed, butcher_id: B2.id).save
+    # gammon = Ham.new(type: gammon, butcher_id: JJ.id).save
+    # honey = Ham.new(type: honey-glazed, butcher_id: B2.id).save
 
   end
 end

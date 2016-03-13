@@ -7,7 +7,7 @@ require_relative '../lib/static'
 
 class MyController < ControllerBase
   def stage
-    render_content("Gambian takes the stage", "text/html")
+    render_content("Gambon takes the stage", "text/html")
   end
 end
 

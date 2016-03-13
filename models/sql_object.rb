@@ -18,22 +18,6 @@ class SQLObject
     end
   end
 
-  def self.columns
-
-    if @columns.nil?
-      columns = DBConnection.execute2(<<-SQL).to_a
-        SELECT
-          *
-        FROM
-          #{self.table_name}
-      SQL
-
-      @columns = columns.first.map { |column| column.to_sym }
-    else
-      @columns
-    end
-  end
-
   def self.finalize!
     columns.each do |column|
 
@@ -149,7 +133,7 @@ class SQLObject
   end
 
   def destroy
-    vals = self.attribute_values.drop(1)
+    if self.class.find(id)
 
     DBConnection.execute(<<-SQL, *vals, self.id)
       DELETE
@@ -158,6 +142,8 @@ class SQLObject
       WHERE
         id = ?
     SQL
+
+    return self
   end
 
   def save

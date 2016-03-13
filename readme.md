@@ -10,4 +10,4 @@ You will need the following:
   * Ruby
   * Postgres
 
-You will then want to call
+You will then want to enter lib/db and change APP_NAME to the name of your app.  Then you should run `DBConnection.open` in the terminal.  This will create your 

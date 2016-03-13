@@ -1,4 +1,4 @@
-require_relative 'db_connection'
+require_relative '../../lib/db_connection'
 require 'active_support/inflector'
 require 'active_support/core_ext/string'
 require_relative 'associatable'
@@ -135,16 +135,15 @@ class Gambon::SQLObject
   def destroy
     if self.class.find(id)
 
-      DBConnection.execute(<<-SQL, *vals, self.id)
-        DELETE
-        FROM
-          #{self.class.table_name}
-        WHERE
-          id = ?
-      SQL
+    DBConnection.execute(<<-SQL, *vals, self.id)
+      DELETE
+      FROM
+        #{self.class.table_name}
+      WHERE
+        id = ?
+    SQL
 
-      return self
-    end
+    return self
   end
 
   def save

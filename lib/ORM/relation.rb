@@ -1,4 +1,4 @@
-require_relative './db_connection'
+require_relative '../../lib/db_connection'
 require_relative 'sql_object'
 
 class SQLRelation
@@ -25,7 +25,7 @@ class SQLRelation
       associated = has_many ? selection : selection.first
 
       new_match = proc { associated }
-      SQLObject.define_singleton_method_by_proc(
+      Gambon::SQLObject.define_singleton_method_by_proc(
         self, method_name, new_match
       )
 
@@ -33,7 +33,7 @@ class SQLRelation
     end
 
     base.collection.each do |base_sql_obj|
-      SQLObject.define_singleton_method_by_proc(
+      Gambon::SQLObject.define_singleton_method_by_proc(
         base_sql_obj, method_name, match
       )
     end

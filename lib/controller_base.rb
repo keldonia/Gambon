@@ -7,7 +7,7 @@ require_relative './route_helpers'
 require_relative './authenticity_token'
 require_relative './flash'
 
-class ControllerBase
+class Gambon::ControllerBase
   include RouteHelpers
 
   attr_reader :req, :res, :params

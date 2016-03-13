@@ -34,7 +34,7 @@ class Generate < Thor
   end
 end
 
-class Db < Thor
+class DB < Thor
   desc "create", "creates database"
   def create
     require_relative '../lib/db_connection'
@@ -67,7 +67,7 @@ end
 
 class CLI < Thor
   register(Generate, 'generate', 'generate <command>', 'Generates a model or controller')
-  register(Db, 'db', 'db:<command>', "Accesses commands for the database.")
+  register(DB, 'db', 'db <command>', "Accesses commands for the database.")
 
   desc "g", "alias of generate"
   subcommand 'g', Generate

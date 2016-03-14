@@ -1,7 +1,7 @@
 Gambom
 ======
 
-Gambom is lightweight MVC framework with a built-in in ORM that allows for updates to a Postgres database to be run with minimal additional SQL code.  Gambom was inspired by Rails and Sinatra i
+Gambom is lightweight MVC framework with a built-in in ORM that allows for updates to a Postgres database to be run with minimal additional SQL code.  Gambom was inspired by Rails and Sinatra and strives to create a framework with minimal overhead.
 
 How to use Gambom
 -----------------

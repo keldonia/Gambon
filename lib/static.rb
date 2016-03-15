@@ -36,7 +36,8 @@ class FileServer
     '.jpeg' => 'image/jpeg',
     '.png'  => 'image/png',
     '.zip'  => 'application/zip',
-    '.css'  => 'text/css'
+    '.css'  => 'text/css',
+    '.js'   => 'text/javascript'
   }
 
   def initialize(root)

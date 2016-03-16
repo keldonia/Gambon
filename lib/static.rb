@@ -32,12 +32,21 @@ class FileServer
 
   MIME_TYPES = {
     '.txt'  => 'text/plain',
+    '.css'  => 'text/css',
+    '.html' => 'text/html',
+    '.csv'  => 'text/csv',
     '.jpg'  => 'image/jpeg',
     '.jpeg' => 'image/jpeg',
     '.png'  => 'image/png',
+    '.gif'  => 'image/gif',
+    '.js'   => 'application/javascript',
+    '.json' => 'application/json',
+    '.pdf'  => 'application/pdf',
+    '.xml'  => 'application/xml',
     '.zip'  => 'application/zip',
-    '.css'  => 'text/css',
-    '.js'   => 'text/javascript'
+    '.mp3'  => 'audio/mp3',
+    '.mp4'  => 'video/mp4',
+    '.h264' => 'video/h264'
   }
 
   def initialize(root)

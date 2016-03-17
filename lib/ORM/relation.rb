@@ -115,6 +115,29 @@ class SQLRelation
     results
   end
 
+  def joins(relation)
+    load
+    p joins
+    puts "LOADING #{relation.to_s}"
+    assoc = klass.assoc_options[param]
+    f_k = assoc.foreign_key
+    p_k = assoc.primary_key
+    joins_table = assoc.table_name.to_s
+
+    results = DBConnection.execute(<<-SQL)
+    SELECT
+      *
+    FROM
+      #{self.table_name}
+    JOIN
+      #{joins_table}
+    ON
+      #{f_k} = #{p_k}
+    SQL
+
+    results = parse_all(results)
+  end
+
   def load_includes(relation)
     includes_params.each do |param|
       if relation.klass.has_association?(param)

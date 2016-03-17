@@ -65,6 +65,16 @@ class SQLRelation
     load
   end
 
+  def minimum(column)
+    @sql_min = column
+    load
+  end
+
+  def maximum(column)
+    @sql_max = column
+    load
+  end
+
   def average(column)
     @sql_avg = column
     load
@@ -121,6 +131,8 @@ class SQLRelation
       select_statement = uniq ? "DISTINCT #{self.table_name.to_s}.*" : "#{self.table_name.to_s}.*"
       select_statement = sql_count ? "COUNT(select_statement)" : select_statement
       select_statement = sql_avg ? "AVG(sql_avg)" : select_statement
+      select_statement = sql_min ? "MIN(sql_min)" : select_statement
+      select_statement = sql_max ? "MAX(sql_max)" : select_statement
       puts "LOADING #{table_name}"
       results = DBConnection.execute(<<-SQL, sql_params[:values])
         SELECT

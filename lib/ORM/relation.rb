@@ -67,6 +67,7 @@ class SQLRelation
 
   def uniq
     @distinct = true
+    load
   end
 
   def included_relations
@@ -92,6 +93,7 @@ class SQLRelation
       puts "LOADING #{table_name}"
       results = DBConnection.execute(<<-SQL, sql_params[:values])
         SELECT
+          #{ uniq ? DISTINCT : "" }
           #{ sql_count ? "COUNT(*)" : self.table_name.to_s + ".*" }
         FROM
           #{ self.table_name }

@@ -65,6 +65,10 @@ class SQLRelation
     load
   end
 
+  def uniq
+    @distinct = true
+  end
+
   def included_relations
     @included_relations ||= []
   end
